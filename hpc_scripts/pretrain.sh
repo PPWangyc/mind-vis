@@ -9,7 +9,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:1
 #SBATCH -t 0-1:00:00 
-#SBATCH --mem=64g
+#SBATCH --mem=64g -C Gold6130
 
 cd ..
 python code/stageA1_mbm_pretrain.py
