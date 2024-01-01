@@ -36,6 +36,9 @@ class cond_stage_model(nn.Module):
 
     def forward(self, x):
         # n, c, w = x.shape
+        # print(x.shape)
+        # print('Im here!')
+        # exit()
         latent_crossattn = self.mae(x)
         if self.global_pool == False:
             latent_crossattn = self.channel_mapper(latent_crossattn)
@@ -55,14 +58,13 @@ class fLDM:
         config.model.params.unet_config.params.global_pool = global_pool
 
         self.cond_dim = config.model.params.unet_config.params.context_dim
-
+        # print(config.model)
         model = instantiate_from_config(config.model)
         pl_sd = torch.load(self.ckp_path, map_location="cpu")['state_dict']
        
         m, u = model.load_state_dict(pl_sd, strict=False)
         model.cond_stage_trainable = True
         model.cond_stage_model = cond_stage_model(metafile, num_voxels, self.cond_dim, global_pool=global_pool)
-
         model.ddim_steps = ddim_steps
         model.re_init_ema()
         if logger is not None:

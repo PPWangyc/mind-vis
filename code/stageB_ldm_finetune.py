@@ -145,7 +145,7 @@ def main(config):
         num_voxels = fmri_latents_dataset_train.num_voxels
     else:
         raise NotImplementedError
-
+    print(len(fmri_latents_dataset_train), len(fmri_latents_dataset_test))
     # prepare pretrained mbm 
     pretrain_mbm_metafile = torch.load(config.pretrain_mbm_path, map_location='cpu')
     # create generateive model

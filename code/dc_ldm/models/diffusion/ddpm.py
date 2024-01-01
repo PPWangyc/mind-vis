@@ -405,6 +405,7 @@ class DDPM(pl.LightningModule):
                 latent = item[0] # fmri embedding
                 gt_image = rearrange(item[1], 'h w c -> 1 c h w') # h w c
                 print(f"rendering {num_samples} examples in {ddim_steps} steps.")
+                print(f"latent shape: {latent.shape}")
                 c = model.get_learned_conditioning(repeat(latent, 'h w -> c h w', c=num_samples).to(self.device))
                 samples_ddim, _ = sampler.sample(S=ddim_steps, 
                                                 conditioning=c,

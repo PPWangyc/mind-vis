@@ -409,9 +409,14 @@ def create_BOLD5000_dataset(path='../data/BOLD5000', patch_size=16, fmri_transfo
             for npy in fmri_files:
                 if npy.endswith('.npy') and sub in npy and roi in npy:
                     fmri_data_sub.append(np.load(os.path.join(fmri_path, npy)))
+                    print(np.load(os.path.join(fmri_path, npy)).shape)
+        print("subj:",sub)
+        print("fmri data sub shape, before concat",len(fmri_data_sub))
         fmri_data_sub = np.concatenate(fmri_data_sub, axis=-1) # concatenate all rois
+        print("fmri data sub shape, after roi",fmri_data_sub.shape)
         fmri_data_sub = normalize(pad_to_patch_size(fmri_data_sub, patch_size))
-      
+        print(fmri_data_sub.shape)
+        print("fmri data sub shape, after patch",fmri_data_sub.shape)
         # load image
         img_files = get_stimuli_list(img_path, sub)
         img_data_sub = [imgs_dict[name] for name in img_files]
@@ -441,7 +446,7 @@ def create_BOLD5000_dataset(path='../data/BOLD5000', patch_size=16, fmri_transfo
     fmri_test_major = np.concatenate(fmri_test_major, axis=0)
     img_train_major = np.concatenate(img_train_major, axis=0)
     img_test_major = np.concatenate(img_test_major, axis=0)
-
+    print("fmri train major shape",fmri_train_major.shape)
     num_voxels = fmri_train_major.shape[-1]
     if isinstance(image_transform, list):
         return (BOLD5000_dataset(fmri_train_major, img_train_major, fmri_transform, image_transform[0], num_voxels), 
