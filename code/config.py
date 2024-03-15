@@ -93,9 +93,9 @@ class Config_Generative_Model:
         # self.pretrain_gm_path = os.path.join(self.root_path, 'pretrains/ldm/text2img-large')
         # self.pretrain_gm_path = os.path.join(self.root_path, 'pretrains/ldm/layout2img')
         
-        self.dataset = 'GOD' # GOD or BOLD5000
+        self.dataset = 'BOLD5000' # GOD or BOLD5000
         self.kam_subs = ['sbj_3']
-        self.bold5000_subs = ['CSI3']
+        self.bold5000_subs = ['CSI1']
         self.pretrain_mbm_path = os.path.join(self.root_path, f'pretrains/{self.dataset}/fmri_encoder.pth') 
 
         self.img_size = 256
@@ -120,4 +120,6 @@ class Config_Generative_Model:
         # resume check util
         self.model_meta = None
         self.checkpoint_path = None # os.path.join(self.root_path, 'results/generation/25-08-2022-08:02:55/checkpoint.pth')
-        
+        print("dataset name: ", self.dataset)
+        print("pretrain_mbm_path: ", self.pretrain_mbm_path)
+        print("batch_size: ", self.batch_size)

@@ -146,13 +146,18 @@ def main(config):
     else:
         raise NotImplementedError
     print(len(fmri_latents_dataset_train), len(fmri_latents_dataset_test))
+    print("config.dataset: ", config.dataset)
+    print("config subset: ", config.kam_subs if config.dataset == 'GOD' else config.bold5000_subs)
+    print("num_voxels: ", num_voxels)
+    print("batch_size: ", config.batch_size)
+    print("epoch: ", config.num_epoch)
+    print("config.pretrain_mbm_path: ", config.pretrain_mbm_path)
     # prepare pretrained mbm 
     pretrain_mbm_metafile = torch.load(config.pretrain_mbm_path, map_location='cpu')
     # create generateive model
     generative_model = fLDM(pretrain_mbm_metafile, num_voxels,
                 device=device, pretrain_root=config.pretrain_gm_path, logger=config.logger, 
                 ddim_steps=config.ddim_steps, global_pool=config.global_pool, use_time_cond=config.use_time_cond)
-    
     # resume training if applicable
     if config.checkpoint_path is not None:
         model_meta = torch.load(config.checkpoint_path, map_location='cpu')

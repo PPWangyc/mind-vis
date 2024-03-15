@@ -12,6 +12,6 @@
 
 conda activate mind-vis
 cd ..
-python code/stageB_ldm_finetune.py --dataset BOLD5000 --num_epoch 500
+python code/stageB_ldm_finetune.py
 conda deactivate
 cd hpc_scripts
