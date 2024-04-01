@@ -17,11 +17,12 @@ def pad_to_patch_size(x, patch_size):
     return np.pad(x, ((0,0),(0, patch_size-x.shape[1]%patch_size)), 'wrap')
 
 def pad_to_length(x, length):
-    assert x.ndim == 3
+    assert x.ndim == 3 or x.ndim == 2
     assert x.shape[-1] <= length
     if x.shape[-1] == length:
         return x
-
+    if x.ndim == 2:
+        return np.pad(x, ((0,0),(0, length - x.shape[-1])), 'wrap')
     return np.pad(x, ((0,0),(0,0), (0, length - x.shape[-1])), 'wrap')
 
 def normalize(x, mean=None, std=None):
@@ -442,6 +443,14 @@ def create_BOLD5000_dataset(path='../data/BOLD5000', patch_size=16, fmri_transfo
         fmri_test_major.append(test_fmri)
         img_train_major.append(train_img)
         img_test_major.append(test_img)
+    if len(subjects) > 1:
+        max_len = 0
+        for i in range(len(fmri_train_major)):
+            max_len = max(max_len, fmri_train_major[i].shape[-1])
+        for i in range(len(fmri_train_major)):
+            fmri_train_major[i] = pad_to_length(fmri_train_major[i], max_len)
+            fmri_test_major[i] = pad_to_length(fmri_test_major[i], max_len)
+    
     fmri_train_major = np.concatenate(fmri_train_major, axis=0)
     fmri_test_major = np.concatenate(fmri_test_major, axis=0)
     img_train_major = np.concatenate(img_train_major, axis=0)
